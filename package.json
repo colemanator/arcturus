@@ -1,0 +1,13 @@
+{
+  "name": "arcturus",
+  "version": "0.0.1",
+  "description": "Manages state in worker threads through simple actions, reducers and selectors",
+  "keywords": ["state", "webworker", "parallel", "multithreaded"],
+  "author": {
+    "name": "Peter Coleman"
+  },
+  "dependencies": {
+    "comlinkjs": "^2.3.0",
+    "object-path": "^0.11.4"
+  }
+}
