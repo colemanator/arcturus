@@ -1,5 +1,5 @@
-import Comlink from 'comlinkjs';
-import AsyncQueue from 'lib/qeueu';
+import { Comlink } from 'comlinkjs/comlink.es6.js';
+import AsyncQueue from './lib/queue';
 
 export default class Arcturus {
   /**
@@ -74,10 +74,13 @@ export default class Arcturus {
     const { proxies, state } = this;
 
     // Send the action to each worker and wait for state
-    const workerStates = await Promise.all(proxies.map(proxy proxy.action(task.payload)));
+    const workerStates = await Promise.all(proxies.map(proxy => proxy.action(task.payload)));
 
     // consolidate state
-    this.state = workerStates.reduce((state, workerState) => ({...state, ...workerState }), {});
+    this.state = workerStates.reduce((state, workerState) => ({
+      ...state,
+      ...workerState
+    }), {});
 
     // Notify consumers of new state
     this.notifyConsumers();

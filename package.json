@@ -2,12 +2,37 @@
   "name": "arcturus",
   "version": "0.0.1",
   "description": "Manages state in worker threads through simple actions, reducers and selectors",
-  "keywords": ["state", "webworker", "parallel", "multithreaded"],
+  "keywords": [
+    "state",
+    "webworker",
+    "parallel",
+    "multithreaded"
+  ],
   "author": {
     "name": "Peter Coleman"
   },
+  "license": "UNLICEDSED",
+  "scripts": {
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir dist/lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir dist/es",
+    "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/arcturus.js",
+    "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/arcturus.min.js",
+    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min"
+  },
   "dependencies": {
-    "comlinkjs": "^2.3.0",
-    "object-path": "^0.11.4"
+    "comlinkjs": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-eslint": "^7.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.16.0",
+    "cross-env": "^5.1.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
   }
 }
