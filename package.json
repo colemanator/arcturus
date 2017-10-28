@@ -2,6 +2,13 @@
   "name": "arcturus",
   "version": "0.0.1",
   "description": "Manages state in worker threads through simple actions, reducers and selectors",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
+  "jsnext:main": "dist/es/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "keywords": [
     "state",
     "webworker",
@@ -11,13 +18,13 @@
   "author": {
     "name": "Peter Coleman"
   },
-  "license": "UNLICEDSED",
+  "license": "MIT",
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir dist/lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir dist/es",
     "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/arcturus.js",
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/arcturus.min.js",
-    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min"
+    "build": "yarn build:commonjs && yarn build:es && yarn build:umd && yarn build:umd:min"
   },
   "dependencies": {
     "comlinkjs": "^2.3.0"
@@ -26,6 +33,7 @@
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.16.0",
     "cross-env": "^5.1.0",

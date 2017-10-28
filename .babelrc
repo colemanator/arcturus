@@ -6,6 +6,7 @@
     "stage-0"
   ],
   "plugins": [
+    "transform-runtime",
     "external-helpers"
   ]
 }
