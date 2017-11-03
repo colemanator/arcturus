@@ -11,19 +11,16 @@ const config = {
     format: 'umd',
     name: 'arcturus'
   },
-  external: ['comlinkjs'],
+  external: ['comlinkjs/comlink.es6.js', 'object-path'],
   plugins: [
     nodeResolve({
-      jsnext: true,
-      main: true,
-      browsers: true
+      jsnext: true
     }),
     commonjs({
       include: 'node_modules/**'
     }),
     babel({
       exclude: 'node_modules/**',
-      include: ['node_modules/comlinkjs/**', 'src/**'],
       runtimeHelpers: true
     }),
     replace({

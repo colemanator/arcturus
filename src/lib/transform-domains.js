@@ -1,5 +1,6 @@
 import combineReducers from './combine-reducers';
 import combineSelectors from './combine-selectors';
+import { has } from 'object-path';
 
 const REDUCER_KEY = 'reducer';
 const SELECTOR_KEY = 'selector';
@@ -14,9 +15,7 @@ export default function transformDomains (domains) {
 
   // Check domains, ensuring they have a reducer and a selector
   domainKeys.forEach(key => {
-    try {
-      if (!domains[key][REDUCER_KEY] || !domains[key][SELECTOR_KEY]) throw new Error();
-    } catch (e) {
+    if (!has(domains, [key, REDUCER_KEY]) || !has(domains, [key, SELECTOR_KEY])) {
       throw new Error(
         `transformDomains: Each domain should have a reducer and a selector please check the domain [${key}]`
       );
