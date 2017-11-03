@@ -11,15 +11,19 @@ const config = {
     format: 'umd',
     name: 'arcturus'
   },
+  external: ['comlinkjs'],
   plugins: [
     nodeResolve({
-      jsnext: true
+      jsnext: true,
+      main: true,
+      browsers: true
     }),
     commonjs({
-        include: 'node_modules/**'
+      include: 'node_modules/**'
     }),
     babel({
       exclude: 'node_modules/**',
+      include: ['node_modules/comlinkjs/**', 'src/**'],
       runtimeHelpers: true
     }),
     replace({

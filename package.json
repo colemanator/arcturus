@@ -22,8 +22,8 @@
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir dist/lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir dist/es",
-    "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/arcturus.js",
-    "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/arcturus.min.js",
+    "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/arcturus.umd.js",
+    "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/arcturus.umd.min.js",
     "build": "yarn build:commonjs && yarn build:es && yarn build:umd && yarn build:umd:min"
   },
   "dependencies": {

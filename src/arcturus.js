@@ -1,5 +1,5 @@
 import { Comlink } from 'comlinkjs/comlink.es6.js';
-import AsyncQueue from './lib/queue';
+import AsyncQueue from './lib/async-queue';
 
 export default class Arcturus {
   /**
@@ -10,8 +10,7 @@ export default class Arcturus {
    */
   constructor (workerFiles, options) {
     this.workers = workerFiles.map(file => new Worker(file));
-    this.actionQueue = new AsyncQueue(task => this.proccesAction(task));
-    this.poxies = [];
+    this.actionQueue = new AsyncQueue(this.proccesAction.bind(this));
     this.consumers = [];
   }
 
@@ -22,10 +21,13 @@ export default class Arcturus {
   async establishProxies () {
       const { workers } = this;
 
-      this.proxies = await Promise.all(workers.map(worker => comlinkjs.proxy(worker)))
+      this.workers = await Promise.all(workers
+        .map(worker => Comlink.proxy(worker))
+        .map(worker => new worker.ArcturusWorker())
+      )
         .catch(err => console.error(err));
 
-      this.schedualAction({});
+      this.schedual({});
   }
 
   /**
@@ -53,7 +55,7 @@ export default class Arcturus {
    * @return {undefined}
    */
   notifyConsumers () {
-    const { state, consumers } = this.state;
+    const { state, consumers } = this;
     consumers.forEach(consumer => consumer(() => this.getState()));
   }
 
@@ -71,10 +73,10 @@ export default class Arcturus {
    * @return {Promise} resolves once all proxies have resolved
    */
   async proccesAction (task) {
-    const { proxies, state } = this;
+    const { workers, state } = this;
 
     // Send the action to each worker and wait for state
-    const workerStates = await Promise.all(proxies.map(proxy => proxy.action(task.payload)));
+    const workerStates = await Promise.all(workers.map(worker => worker.action(task)));
 
     // consolidate state
     this.state = workerStates.reduce((state, workerState) => ({
@@ -91,11 +93,8 @@ export default class Arcturus {
    * @param  {object} action
    * @return {undefined}
    */
-  schedualAction (action) {
-    const { taskQueue } = this;
-    taskQueue.schedual({
-      type: ACTION,
-      payload: { action }
-    });
+  schedual (action) {
+    const { actionQueue } = this;
+    actionQueue.schedual(action);
   }
 }

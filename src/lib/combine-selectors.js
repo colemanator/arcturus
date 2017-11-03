@@ -12,7 +12,7 @@ export default function combineSelectors(selectors) {
   return function rootSelector (state) {
     return selectors.reduce((selectedState, domainSelector) => ({
       ...selectedState,
-      [domainSelector.domain]: domainSelector.func()
+      [domainSelector.domain]: domainSelector.func(state)
     }), state);
   }
 }

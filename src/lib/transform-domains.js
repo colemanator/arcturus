@@ -15,10 +15,10 @@ export default function transformDomains (domains) {
   // Check domains, ensuring they have a reducer and a selector
   domainKeys.forEach(key => {
     try {
-      if (domains[key][REDUCER_KEY] || domains[key][SELECTOR_KEY]) throw new Error();
+      if (!domains[key][REDUCER_KEY] || !domains[key][SELECTOR_KEY]) throw new Error();
     } catch (e) {
       throw new Error(
-        `transformdomains: Each domain should have a reducer and a selector please check the domain [${key}]`
+        `transformDomains: Each domain should have a reducer and a selector please check the domain [${key}]`
       );
     }
   })
@@ -41,5 +41,5 @@ export default function transformDomains (domains) {
     }
   ], []);
 
-  return [combineSelectors(selectors), combineReducers(reducers)];
+  return [combineReducers(reducers), combineSelectors(selectors)];
 }

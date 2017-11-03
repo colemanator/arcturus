@@ -11,7 +11,7 @@ export default class AsyncQueue {
   constructor (processor) {
     this.queue = [];
     this.status = IDLE;
-    this.processor = proccessor;
+    this.processor = processor;
   }
 
   /**
@@ -30,14 +30,14 @@ export default class AsyncQueue {
    * @return {Promise}
    */
   async proccessQueue () {
-    const { state, queue, processor } = this;
-    if (state === IDLE) {
-      this.state = ACTIVE;
+    const { status, queue, processor } = this;
+    if (status === IDLE) {
+      this.status = ACTIVE;
       while (queue.length) {
         await processor(queue.shift());
       }
 
-      this.state = IDLE;
+      this.status = IDLE;
     }
   }
 }
