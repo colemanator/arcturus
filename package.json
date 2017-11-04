@@ -24,7 +24,17 @@
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir dist/es",
     "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/arcturus.umd.js",
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/arcturus.umd.min.js",
-    "build": "yarn build:commonjs && yarn build:es && yarn build:umd && yarn build:umd:min"
+    "build": "yarn build:commonjs && yarn build:es && yarn build:umd && yarn build:umd:min",
+    "precommit": "yarn lint:staged",
+    "lint:staged": "lint-staged",
+    "lint:prettier": "prettier-eslint --write \"src/**/*.js\""
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier-eslint --write --eslintPath=node_modules/eslint --prettierPath=node_modules/prettier",
+      "git add",
+      "eslint"
+    ]
   },
   "dependencies": {
     "comlinkjs": "^2.3.0",
@@ -38,11 +48,17 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.16.0",
     "cross-env": "^5.1.0",
+    "eslint": "^4.10.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.3.0",
+    "prettier": "^1.7.4",
+    "prettier-eslint-cli": "^4.4.0",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-uglify": "^2.0.1"
+    "rollup-plugin-uglify": "^2.0.1",
+    "semistandard": "^11.0.0"
   }
 }

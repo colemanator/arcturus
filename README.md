@@ -2,16 +2,87 @@
 Manages state in worker threads through simple actions, reducers and selectors.
 
 ## Status
-Currently under development and at an early prototype stage.
+Working prototype stage, an example can be found [here](github.com)
+
+## Install
+Not currently on npm so you'll need to download and use yarn link, or something else.
+
+## Usage
+In your main thread
+```
+import { Arcturus } from 'arcturus';
+
+// Create the store and pass in the location of the worker file(s)
+const store = new Arcturus(['/dist/worker.js']);
+
+// Here we establish a connection with the workers
+store.establishConnection().then(() => {
+
+  // Subscribe for any changes, this can be done anytime after we create the store
+  store.subscribe(getState => {
+    console.log(getState());
+  })
+
+  // Schedule an action to be processed
+  store.schedual({ type: 'test' })
+});
+
+```
+
+In a separate worker thread
+```
+import { createArcturusWorker, transformDomains } from 'arcturus';
+
+// Initial state of this reducer's domain
+const initialState = {
+  test: 1
+}
+
+/**
+ * Takes current state and action and returns new state
+ * @param  {object|undefined} [state=initialState] current state (domain)
+ * @param  {object} action
+ * @return {object}
+ */
+function reducer (state = initialState, action) => {
+  switch(action.type) {
+    case 'test':
+      return { test: state.test + 1 };
+    default:
+      return state;
+  };
+}
+
+/**
+ * Return a selection of the state (domain)
+ * @param  {object} state
+ * @return {any}
+ */
+function selector (state) {
+  return state;
+}
+
+// domains
+const domains = {
+  test: {
+    reducer,
+    selector
+  }
+}
+
+createArcturusWorker(...transformDomains(domains));
+```
 
 ## Roadmap
 
-1. Create test app
-2. Write tests
-3. flow
-4. Docs
-5. alpha
-6. middleware
-7. publish to npm
-8. beta
-9. release
+1. Write tests
+2. flow
+3. Docs
+4. alpha
+5. publish to npm
+6. beta
+7. release
+
+## Future work
+1. replace comlinkjs with custom solution
+2. Implement worker based effects and the ability to schedule actions from workers

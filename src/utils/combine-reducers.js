@@ -4,7 +4,6 @@
  * @return {function}
  */
 export default function combineReducers (reducers) {
-
   /**
    * Root reducer takes state and an action then reduces through each domain reducer
    * @param  {Object} state  Current state
@@ -13,7 +12,10 @@ export default function combineReducers (reducers) {
    */
   return function rootReduer (state = {}, action) {
     return reducers.reduce((newState, domainReducer) => {
-      const reducedState = domainReducer.func(state[domainReducer.domain], action);
+      const reducedState = domainReducer.func(
+        state[domainReducer.domain],
+        action
+      );
 
       // Check returned state
       if (reducedState === undefined) {
@@ -25,7 +27,7 @@ export default function combineReducers (reducers) {
       return {
         ...newState,
         [domainReducer.domain]: reducedState
-      }
+      };
     }, state);
-  }
+  };
 }

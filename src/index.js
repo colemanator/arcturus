@@ -1,8 +1,8 @@
 import Arcturus from './arcturus';
 import createArcturusWorker from './create-arcturus-worker';
-import transformDomains from './lib/transform-domains';
-import combineReducers from './lib/combine-reducers';
-import combineSelectors from './lib/combine-selectors';
+import transformDomains from './utils/transform-domains';
+import combineReducers from './utils/combine-reducers';
+import combineSelectors from './utils/combine-selectors';
 
 export {
   Arcturus,

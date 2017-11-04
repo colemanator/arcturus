@@ -1,5 +1,5 @@
 import { Comlink } from 'comlinkjs/comlink.es6.js';
-import AsyncQueue from './lib/async-queue';
+import AsyncQueue from './utils/async-queue';
 
 export default class Arcturus {
   /**
@@ -9,7 +9,7 @@ export default class Arcturus {
    * @return {object}
    */
   constructor (workerFiles, options) {
-    this.workers = workerFiles.map(file => new Worker(file));
+    this.workers = workerFiles.map(file => new Worker(file)); // eslint-disable-line
     this.actionQueue = new AsyncQueue(this.proccesAction.bind(this));
     this.consumers = [];
   }
@@ -18,16 +18,16 @@ export default class Arcturus {
    * Establish a proxy to each WebWorker using a comlinkjs
    * @return {Promise} will resolve to true when all proxies have been established
    */
-  async establishProxies () {
-      const { workers } = this;
+  async establishConnection () {
+    const { workers } = this;
 
-      this.workers = await Promise.all(workers
+    this.workers = await Promise.all(
+      workers
         .map(worker => Comlink.proxy(worker))
         .map(worker => new worker.ArcturusWorker())
-      )
-        .catch(err => console.error(err));
+    ).catch(err => console.error(err));
 
-      this.schedual({});
+    this.schedual({});
   }
 
   /**
@@ -55,7 +55,7 @@ export default class Arcturus {
    * @return {undefined}
    */
   notifyConsumers () {
-    const { state, consumers } = this;
+    const { consumers } = this;
     consumers.forEach(consumer => consumer(() => this.getState()));
   }
 
@@ -73,16 +73,21 @@ export default class Arcturus {
    * @return {Promise} resolves once all proxies have resolved
    */
   async proccesAction (task) {
-    const { workers, state } = this;
+    const { workers } = this;
 
     // Send the action to each worker and wait for state
-    const workerStates = await Promise.all(workers.map(worker => worker.action(task)));
+    const workerStates = await Promise.all(
+      workers.map(worker => worker.action(task))
+    );
 
     // consolidate state
-    this.state = workerStates.reduce((state, workerState) => ({
-      ...state,
-      ...workerState
-    }), {});
+    this.state = workerStates.reduce(
+      (state, workerState) => ({
+        ...state,
+        ...workerState
+      }),
+      {}
+    );
 
     // Notify consumers of new state
     this.notifyConsumers();
@@ -93,8 +98,8 @@ export default class Arcturus {
    * @param  {object} action
    * @return {undefined}
    */
-  schedual (action) {
+  Schedule (action) {
     const { actionQueue } = this;
-    actionQueue.schedual(action);
+    actionQueue.Schedule(action);
   }
 }

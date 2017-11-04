@@ -19,7 +19,7 @@ export default class AsyncQueue {
    * @param  {any} item
    * @return {undefined}
    */
-  schedual (item) {
+  Schedule (item) {
     const { queue } = this;
     queue.push(item);
     this.proccessQueue();
