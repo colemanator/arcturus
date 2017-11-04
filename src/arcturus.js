@@ -27,7 +27,7 @@ export default class Arcturus {
         .map(worker => new worker.ArcturusWorker())
     ).catch(err => console.error(err));
 
-    this.schedual({});
+    this.schedule({});
   }
 
   /**
@@ -98,7 +98,7 @@ export default class Arcturus {
    * @param  {object} action
    * @return {undefined}
    */
-  Schedule (action) {
+  schedule (action) {
     const { actionQueue } = this;
     actionQueue.Schedule(action);
   }
