@@ -1,8 +1,10 @@
 # Arcturus
 Manages state in worker threads through simple actions, reducers and selectors.
 
+While using [Redux](https://github.com/reactjs/redux) I realised that your view and your state are decoupled enough that they could be placed in separate threads. Actions are scheduled and sent across to workers which like in Redux reduce the state before sending back the new state.
+
 ## Status
-Working prototype stage, an example can be found [here](github.com)
+Working prototype stage.
 
 ## Install
 Not currently on npm so you'll need to download and use yarn link, or something else.
@@ -24,7 +26,7 @@ store.establishConnection().then(() => {
   })
 
   // Schedule an action to be processed
-  store.schedual({ type: 'test' })
+  store.schedule({ type: 'test' })
 });
 
 ```
