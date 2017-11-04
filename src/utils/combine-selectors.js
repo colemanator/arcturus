@@ -13,7 +13,9 @@ export default function combineSelectors (selectors) {
     return selectors.reduce(
       (selectedState, domainSelector) => ({
         ...selectedState,
-        [domainSelector.domain]: domainSelector.func(state)
+        [domainSelector.domain]: domainSelector.func(
+          state[domainSelector.domain]
+        )
       }),
       state
     );

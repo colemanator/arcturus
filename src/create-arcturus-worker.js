@@ -8,7 +8,6 @@ import { Comlink } from 'comlinkjs/comlink.es6.js';
  */
 export default function createArcturusWorker (reducer, selector) {
   class ArcturusWorker {
-
     constructor () {
       this.state = undefined;
     }
@@ -35,5 +34,5 @@ export default function createArcturusWorker (reducer, selector) {
     }
   }
 
-  Comlink.expose({ArcturusWorker}, self);
+  Comlink.expose({ ArcturusWorker }, self); // eslint-disable-line
 }

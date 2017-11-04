@@ -11,7 +11,7 @@ Not currently on npm so you'll need to download and use yarn link, or something 
 
 ## Usage
 In your main thread
-```
+```js
 import { Arcturus } from 'arcturus';
 
 // Create the store and pass in the location of the worker file(s)
@@ -26,18 +26,17 @@ store.establishConnection().then(() => {
   })
 
   // Schedule an action to be processed
-  store.schedule({ type: 'test' })
+  store.schedule({ type: 'increment' })
 });
-
 ```
 
 In a separate worker thread
-```
+```js
 import { createArcturusWorker, transformDomains } from 'arcturus';
 
 // Initial state of this reducer's domain
 const initialState = {
-  test: 1
+  count: 1
 }
 
 /**
@@ -46,10 +45,10 @@ const initialState = {
  * @param  {object} action
  * @return {object}
  */
-function reducer (state = initialState, action) => {
+function reducer (state = initialState, action) {
   switch(action.type) {
-    case 'test':
-      return { test: state.test + 1 };
+    case 'increment':
+      return { count: state.count + 1 };
     default:
       return state;
   };
@@ -66,7 +65,7 @@ function selector (state) {
 
 // domains
 const domains = {
-  test: {
+  example: {
     reducer,
     selector
   }
