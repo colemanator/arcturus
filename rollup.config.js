@@ -11,7 +11,6 @@ const config = {
     format: 'umd',
     name: 'arcturus'
   },
-  external: ['comlinkjs/comlink.es6.js', 'object-path'],
   plugins: [
     nodeResolve({
       jsnext: true

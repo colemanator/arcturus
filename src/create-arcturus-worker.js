@@ -1,4 +1,4 @@
-import { Comlink } from 'comlinkjs/comlink.es6.js';
+import { handleAsyncBridge } from './utils/async-bridge';
 
 /**
  * Sets up an Arcturus worker using comlinkjs's expose function
@@ -7,32 +7,36 @@ import { Comlink } from 'comlinkjs/comlink.es6.js';
  * @return {undefined}
  */
 export default function createArcturusWorker (reducer, selector) {
-  class ArcturusWorker {
-    constructor () {
-      this.state = undefined;
-    }
+  const worker = new ArcturusWorker(reducer, selector);
+  handleAsyncBridge(self, worker.action.bind(worker)); // eslint-disable-line
+}
 
-    /**
-     * Takes an action and passes that action to the reducer before setting
-     * the new state, it then returns the result of this.select()
-     * @param  {object} action
-     * @return {object}
-     */
-    action (action) {
-      const { state } = this;
-      this.state = reducer(state, action);
-      return this.select();
-    }
+class ArcturusWorker {
+  constructor (reducer, selector) {
+    this.state = undefined;
 
-    /**
-     * Passes the current state to the selector and returns the result
-     * @return {object}
-     */
-    select () {
-      const { state } = this;
-      return selector(state);
-    }
+    this.reducer = reducer;
+    this.selector = selector;
   }
 
-  Comlink.expose({ ArcturusWorker }, self); // eslint-disable-line
+  /**
+   * Takes an action and passes that action to the reducer before setting
+   * the new state, it then returns the result of this.select()
+   * @param  {object} action
+   * @return {object}
+   */
+  action (action) {
+    const { state, reducer } = this;
+    this.state = reducer(state, action);
+    return this.select();
+  }
+
+  /**
+   * Passes the current state to the selector and returns the result
+   * @return {object}
+   */
+  select () {
+    const { state, selector } = this;
+    return selector(state);
+  }
 }

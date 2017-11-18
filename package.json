@@ -36,10 +36,6 @@
       "eslint"
     ]
   },
-  "dependencies": {
-    "comlinkjs": "^2.3.0",
-    "object-path": "^0.11.4"
-  },
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",

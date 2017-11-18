@@ -1,4 +1,4 @@
-import { Comlink } from 'comlinkjs/comlink.es6.js';
+import AsyncBridge from './utils/async-bridge';
 import AsyncQueue from './utils/async-queue';
 
 export default class Arcturus {
@@ -22,9 +22,10 @@ export default class Arcturus {
     const { workers } = this;
 
     this.workers = await Promise.all(
-      workers
-        .map(worker => Comlink.proxy(worker))
-        .map(worker => new worker.ArcturusWorker())
+      workers.map(worker => {
+        const bridge = new AsyncBridge(worker);
+        return bridge.establish();
+      })
     ).catch(err => console.error(err));
 
     this.schedule({});
@@ -77,7 +78,7 @@ export default class Arcturus {
 
     // Send the action to each worker and wait for state
     const workerStates = await Promise.all(
-      workers.map(worker => worker.action(task))
+      workers.map(worker => worker.message(task))
     );
 
     // consolidate state
@@ -98,7 +99,7 @@ export default class Arcturus {
    * @param  {object} action
    * @return {undefined}
    */
-  schedule (action) {
+  dispatch (action) {
     const { actionQueue } = this;
     actionQueue.Schedule(action);
   }

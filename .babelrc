@@ -2,6 +2,20 @@
   "presets": [
     ["env", {
       "modules": false,
+      "targets": {
+        "browsers": [
+          "> 1%",
+          "Android >= 4.4.3",
+          "Chrome >= 61",
+          "ChromeAndroid >= 61",
+          "Explorer >= 11",
+          "Edge >= 14",
+          "Firefox >= 52",
+          "Safari >= 9",
+          "iOS >= 9",
+          "Samsung >= 5.4"
+        ]
+      }
     }],
     "stage-0"
   ],
