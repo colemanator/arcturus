@@ -76,6 +76,9 @@ createArcturusWorker(...transformDomains(domains));
 
 ## contributing
 If you would like to contrubite please let me know or just createa PR this project is still in it's early stages.
+For Direction please see the roadmap section below.
+
+* Use git-flow
 
 ## Roadmap
 
