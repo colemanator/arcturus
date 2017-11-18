@@ -1,4 +1,4 @@
-import AsyncBridge from './utils/async-bridge';
+import AsyncMessageChannel from './utils/async-message-channel';
 import AsyncQueue from './utils/async-queue';
 
 export default class Arcturus {
@@ -23,12 +23,12 @@ export default class Arcturus {
 
     this.workers = await Promise.all(
       workers.map(worker => {
-        const bridge = new AsyncBridge(worker);
+        const bridge = new AsyncMessageChannel(worker);
         return bridge.establish();
       })
     ).catch(err => console.error(err));
 
-    this.schedule({});
+    this.dispatch({});
   }
 
   /**

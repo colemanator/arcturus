@@ -1,10 +1,10 @@
-const MessageChanel = self.MessageChanel; // eslint-disable-line
+const MessageChannel = self.MessageChannel; // eslint-disable-line
 const crypto = self.crypto; // eslint-disable-line
 
-export default class AsyncBridge {
+export default class AsyncMessageChannel {
   constructor (target) {
-    this.chanel = new MessageChanel();
-    this.port = this.chanel.port1;
+    this.channel = new MessageChannel();
+    this.port = this.channel.port1;
     this.messages = new Map();
     this.target = target;
 
@@ -12,14 +12,14 @@ export default class AsyncBridge {
   }
 
   /**
-   * Establish a connection with the target using MessageChanel
+   * Establish a connection with the target using MessageChannel
    * @return {Promise}
    */
   async establish () {
-    const { chanel, messages, target } = this;
+    const { channel, messages, target } = this;
     const id = this.getUuid();
 
-    target.postMessage(id, '*', [chanel.port2]);
+    target.postMessage(id, [channel.port2]);
 
     // Resolved on reply - see handleMessage
     return new Promise(resolve => messages.set(id, () => resolve(this)));
@@ -49,19 +49,10 @@ export default class AsyncBridge {
   async message (data, transferList) {
     const { port, messages } = this;
     const id = this.getUuid();
-    port.postMessage({ id, data: this.prepareData(data) }, '*', transferList);
+    port.postMessage(JSON.stringify({ id, data }), transferList);
 
     // Resolved on reply - see handleMessage
     return new Promise(resolve => messages.set(id, resolve));
-  }
-
-  /**
-   * @param  {object} data
-   * @return {String}
-   */
-  prepareData (data) {
-    if (typeof data === 'string') return data;
-    return JSON.stringify(data);
   }
 
   /**
@@ -78,26 +69,29 @@ export default class AsyncBridge {
 }
 
 /**
- * Listens for a chanel then uses the handler to respond to any messages sent over the chanel
+ * Listens for a channel then uses the handler to respond to any messages sent over the channel
  * @param  {object} self current window or worker
  * @param  {function} given the data of the message
  * @return {undefined}
  */
-export function handleAsyncBridge (self, handler) {
-  self.onmessage(msg => {
+export function handleAsyncMessageChannel (self, handler) {
+  self.onmessage = msg => {
     if (msg.ports[0]) {
-      msg.ports[0].onmessage = async msg => {
-        const { id, data } = JSON.parse(msg);
+      const port = msg.ports[0];
+
+      port.onmessage = async function workerHandleMessage (msg) {
+        const { id, data } = JSON.parse(msg.data);
         let response = handler(data);
 
         if (Promise.resolve(response) === response) {
           response = await response;
         }
 
-        msg.ports[0].postMessage({ id, response });
+        port.postMessage(JSON.stringify({ id, response }));
       };
 
+      port.postMessage(JSON.stringify({ id: msg.data }));
       self.onmessage = undefined;
     }
-  });
+  };
 }

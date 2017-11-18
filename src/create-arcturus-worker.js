@@ -1,4 +1,4 @@
-import { handleAsyncBridge } from './utils/async-bridge';
+import { handleAsyncMessageChannel } from './utils/async-message-channel';
 
 /**
  * Sets up an Arcturus worker using comlinkjs's expose function
@@ -8,7 +8,7 @@ import { handleAsyncBridge } from './utils/async-bridge';
  */
 export default function createArcturusWorker (reducer, selector) {
   const worker = new ArcturusWorker(reducer, selector);
-  handleAsyncBridge(self, worker.action.bind(worker)); // eslint-disable-line
+  handleAsyncMessageChannel(self, worker.action.bind(worker)); // eslint-disable-line
 }
 
 class ArcturusWorker {
