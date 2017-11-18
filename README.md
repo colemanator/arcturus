@@ -80,14 +80,14 @@ For Direction please see the roadmap section below.
 
 * Use git-flow
 
-## Roadmap
+## Roadmap to release
 
-2. Write tests
-3. Docs
-4. alpha
-5. publish to npm
-6. beta
-7. release
+1. Write tests
+2. Docs
+3. alpha
+4. publish to npm
+5. beta
+6. release
 
 ## Future work
 1. middleware
