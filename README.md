@@ -74,6 +74,11 @@ const domains = {
 createArcturusWorker(...transformDomains(domains));
 ```
 
+## Examples
+Currently we only have one example.
+
+1. [basic](https://github.com/colemanator/arcturus/blob/master/examples/basic/)
+
 ## contributing
 If you would like to contrubite please let me know or just createa PR this project is still in it's early stages.
 For Direction please see the roadmap section below.
