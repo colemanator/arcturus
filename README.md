@@ -75,7 +75,7 @@ createArcturusWorker(...transformDomains(domains));
 ```
 
 ## Examples
-Currently we only have one example.
+Currently we only have one example:
 
 1. [basic](https://github.com/colemanator/arcturus/blob/master/examples/basic/)
 
