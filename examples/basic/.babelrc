@@ -16,11 +16,6 @@
           "Samsung >= 5.4"
         ]
       }
-    }],
-    "stage-0"
-  ],
-  "plugins": [
-    "transform-runtime",
-    "external-helpers"
+    }]
   ]
 }
