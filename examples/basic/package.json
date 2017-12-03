@@ -2,8 +2,8 @@
   "name": "arcturus-basic",
   "description": "An example of arcturus in action (basic).",
   "scripts": {
-  	"dev": "webpack",
-  	"serve": "http-server"
+    "dev": "webpack",
+    "serve": "http-server"
   },
   "license": "MIT",
   "dependencies": {
@@ -13,7 +13,7 @@
     "babel-preset-env": "^1.6.1",
     "comlinkjs": "^2.3.0",
     "http-server": "^0.10.0",
-    "uglifyjs-webpack-plugin": "^1.0.1",
+    "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^3.8.1"
   }
 }
